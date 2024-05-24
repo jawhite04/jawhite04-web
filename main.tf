@@ -25,10 +25,10 @@ resource "aws_s3_bucket_website_configuration" "com_jawhite04" {
 resource "aws_s3_bucket_public_access_block" "com_jawhite04" {
   bucket = aws_s3_bucket.com_jawhite04.id
 
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 resource "aws_s3_object" "index" {
@@ -47,15 +47,10 @@ resource "aws_s3_bucket_policy" "com_jawhite04" {
       {
         Effect = "Allow"
         Principal = {
-          Service = "cloudfront.amazonaws.com"
+          AWS = "${aws_cloudfront_origin_access_identity.s3_distribution.iam_arn}"
         }
         Action   = "s3:GetObject"
         Resource = "${aws_s3_bucket.com_jawhite04.arn}/*"
-        Condition = {
-          StringEquals = {
-            "AWS:SourceArn" = "arn:aws:cloudfront::${data.aws_caller_identity.current.account_id}:distribution/${aws_cloudfront_distribution.s3_distribution.id}"
-          }
-        }
       }
     ]
   })
