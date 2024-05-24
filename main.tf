@@ -32,13 +32,11 @@ resource "aws_s3_bucket_public_access_block" "com_jawhite04" {
 }
 
 resource "aws_s3_object" "index" {
-  bucket = aws_s3_bucket.com_jawhite04.id
-  key    = "index.html"
-  source = "src/index.html"
-  acl    = "public-read"
-
-  content_type        = "text/html; charset=utf-8"
-  content_disposition = "inline"
+  bucket       = aws_s3_bucket.com_jawhite04.id
+  key          = "index.html"
+  source       = "src/index.html"
+  acl          = "public-read"
+  content_type = "text/html"
 }
 
 resource "aws_s3_bucket_policy" "com_jawhite04" {
