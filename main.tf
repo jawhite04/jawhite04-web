@@ -77,10 +77,10 @@ resource "aws_s3_bucket_ownership_controls" "com_jawhite04_logging" {
 resource "aws_s3_bucket_public_access_block" "com_jawhite04_logging" {
   bucket = aws_s3_bucket.com_jawhite04_logging.id
 
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 resource "aws_s3_bucket_acl" "com_jawhite04_logging" {
@@ -93,11 +93,11 @@ resource "aws_s3_bucket_acl" "com_jawhite04_logging" {
   acl    = "log-delivery-write"
 }
 
-resource "aws_s3_bucket_logging" "com_jawhite04_logging" {
-  bucket        = aws_s3_bucket.com_jawhite04.id
-  target_bucket = aws_s3_bucket.com_jawhite04_logging.id
-  target_prefix = "logs-s3/"
-}
+# resource "aws_s3_bucket_logging" "com_jawhite04_logging" {
+#   bucket        = aws_s3_bucket.com_jawhite04.id
+#   target_bucket = aws_s3_bucket.com_jawhite04_logging.id
+#   target_prefix = "logs-s3/"
+# }
 
 ########################
 # ACM Certificate
@@ -207,10 +207,10 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
 
-  logging_config {
-    bucket = aws_s3_bucket.com_jawhite04_logging.bucket_regional_domain_name
-    prefix = "logs-cloudfront/"
-  }
+  # logging_config {
+  #   bucket = aws_s3_bucket.com_jawhite04_logging.bucket_regional_domain_name
+  #   prefix = "logs-cloudfront/"
+  # }
 }
 
 ########################
