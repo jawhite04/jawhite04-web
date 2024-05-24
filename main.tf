@@ -150,10 +150,6 @@ locals {
 }
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
-  provisioner "local-exec" {
-    command = "aws cloudfront create-invalidation --distribution-id ${self.id} --paths '/*'"
-  }
-
   origin {
     origin_id   = local.s3_origin_id
     domain_name = aws_s3_bucket.com_jawhite04.bucket_regional_domain_name
