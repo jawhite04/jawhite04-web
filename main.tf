@@ -159,7 +159,7 @@ resource "aws_cloudfront_distribution" "com_jawhite04" {
     }
   }
 
-  aliases = ["jawhite04.com"]
+  aliases = ["jawhite04.com", "www.jawhite04.com"]
   viewer_certificate {
     acm_certificate_arn = aws_acm_certificate.com_jawhite04.arn
     ssl_support_method  = "sni-only"
@@ -216,4 +216,13 @@ resource "aws_route53_record" "com_jawhite04" {
     zone_id                = aws_cloudfront_distribution.com_jawhite04.hosted_zone_id
     evaluate_target_health = true
   }
+}
+
+resource "aws_route53_record" "com_jawhite04_www" {
+  provider = aws.route53
+  zone_id  = data.aws_route53_zone.com_zone.zone_id
+  name     = "www.jawhite04.com"
+  type     = "CNAME"
+  ttl      = 300
+  records  = [aws_route53_record.com_jawhite04.fqdn]
 }
