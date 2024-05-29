@@ -47,7 +47,7 @@ resource "aws_s3_bucket_policy" "com_jawhite04" {
       {
         Effect = "Allow"
         Principal = {
-          AWS = "${aws_cloudfront_origin_access_identity.s3_distribution.iam_arn}"
+          AWS = "${aws_cloudfront_origin_access_identity.com_jawhite04.iam_arn}"
         }
         Action   = "s3:GetObject"
         Resource = "${aws_s3_bucket.com_jawhite04.arn}/*"
@@ -141,7 +141,7 @@ resource "aws_acm_certificate_validation" "com_dns_validation" {
 ########################
 # Cloudfront Distribution
 ########################
-resource "aws_cloudfront_origin_access_identity" "s3_distribution" {
+resource "aws_cloudfront_origin_access_identity" "com_jawhite04" {
   comment = "S3 bucket OAI"
 }
 
@@ -149,13 +149,13 @@ locals {
   s3_origin_id = "S3-${aws_s3_bucket.com_jawhite04.id}"
 }
 
-resource "aws_cloudfront_distribution" "s3_distribution" {
+resource "aws_cloudfront_distribution" "com_jawhite04" {
   origin {
     origin_id   = local.s3_origin_id
     domain_name = aws_s3_bucket.com_jawhite04.bucket_regional_domain_name
 
     s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.s3_distribution.cloudfront_access_identity_path
+      origin_access_identity = aws_cloudfront_origin_access_identity.com_jawhite04.cloudfront_access_identity_path
     }
   }
 
@@ -205,15 +205,15 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 ########################
 # Route53 Record for Cloudfront
 ########################
-resource "aws_route53_record" "www" {
+resource "aws_route53_record" "com_jawhite04" {
   provider = aws.route53
   zone_id  = data.aws_route53_zone.com_zone.zone_id
   name     = data.aws_route53_zone.com_zone.name
   type     = "A"
 
   alias {
-    name                   = aws_cloudfront_distribution.s3_distribution.domain_name
-    zone_id                = aws_cloudfront_distribution.s3_distribution.hosted_zone_id
+    name                   = aws_cloudfront_distribution.com_jawhite04.domain_name
+    zone_id                = aws_cloudfront_distribution.com_jawhite04.hosted_zone_id
     evaluate_target_health = true
   }
 }
