@@ -1,4 +1,4 @@
-# jawhite04-web
+# jawhite04.com
 Frontend for jawhite04.com.
 
 ## Purpose
